@@ -1,5 +1,9 @@
 version: '3.5'
 
+networks:
+  shared:
+    driver: ${NETWORKS_DRIVER}
+
 services:
 
 ### PostGIS ##############################################
@@ -16,6 +20,8 @@ services:
     restart: on-failure
     healthcheck:
       test: "exit 0"
+    networks:
+      - shared
 
 ### MySQL ################################################
   mysql8:
@@ -35,6 +41,8 @@ services:
     ports:
       - "${MYSQL_PORT}:3306"
     restart: on-failure
+    networks:
+      - shared
 
 ### pgAdmin ##############################################
   pgadmin:
@@ -46,8 +54,13 @@ services:
       - "${PGADMIN_PORT}:80"
     volumes:
       - ${DATA_PATH_HOST}/pgadmin:/var/lib/pgadmin
+    restart: on-failure
     depends_on:
       - ${PGADMIN_DB_ENGINE}
+    networks:
+      - shared
+      - geoportal33_default
+      - opendata4_default
 
 ### phpMyAdmin ###########################################
   phpmyadmin:
@@ -62,8 +75,11 @@ services:
       - UPLOAD_LIMIT=${PMA_UPLOAD_LIMIT}
     ports:
       - "${PMA_PORT}:80"
+    restart: on-failure
     depends_on:
       - "${PMA_DB_ENGINE}"
+    networks:
+      - shared
 
 ### PG Backup ##############################################
   pg-backup:
@@ -85,5 +101,7 @@ services:
       timeout: 30s
       retries: 3
       test: "pg_isready"
+    networks:
+      - shared
 
 
