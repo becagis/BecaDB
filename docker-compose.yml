@@ -102,4 +102,24 @@ services:
     networks:
       - shared
 
+### MySQL Backup ##############################################
+#    mysql-backup:
+#      image: databack/mysql-backup
+#      restart: always
+#      environment:
+#        - DB_SERVER=mysql
+#        - DB_USER=root
+#        - DB_PASS=root
+#        - DB_PORT=3306
+#        - DB_NAMES=becagis default
+#        - DB_DUMP_TARGET=/db
+#        - DB_DUMP_FREQ=1
+#        - NICE=true
+#        #- DB_DUMP_BEGIN=1345
+#      volumes:
+#        - ${DATA_PATH_HOST}/mysql_backup:/db
+#      networks:
+#        - backend
+
+
 
