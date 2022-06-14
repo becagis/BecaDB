@@ -59,8 +59,6 @@ services:
       - ${PGADMIN_DB_ENGINE}
     networks:
       - shared
-      - geoportal33_default
-      - opendata4_default
 
 ### phpMyAdmin ###########################################
   phpmyadmin:
