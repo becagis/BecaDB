@@ -8,7 +8,11 @@ services:
 
 ### PostGIS ##############################################
   postgis14-3.2:
-    image: kartoza/postgis:${POSTGRES_VERSION}
+    image: becagis/becadb_postgis:${POSTGRES_VERSION}
+    build:
+      context: ./postgis
+      args:
+        - POSTGRES_VERSION=${POSTGRES_VERSION}
     volumes:
       - ${DATA_PATH_HOST}/postgis${POSTGRES_VERSION}:/var/lib/postgresql
     environment:
@@ -55,8 +59,8 @@ services:
     volumes:
       - ${DATA_PATH_HOST}/pgadmin:/var/lib/pgadmin
     restart: on-failure
-    depends_on:
-      - ${PGADMIN_DB_ENGINE}
+#    depends_on:
+#      - ${PGADMIN_DB_ENGINE}
     networks:
       - shared
 
@@ -74,8 +78,8 @@ services:
     ports:
       - "${PMA_PORT}:80"
     restart: on-failure
-    depends_on:
-      - "${PMA_DB_ENGINE}"
+#    depends_on:
+#      - "${PMA_DB_ENGINE}"
     networks:
       - shared
 
@@ -92,8 +96,8 @@ services:
       - POSTGRES_PORT=${POSTGRES_PORT}
       - DBLIST=${POSTGRES_BACKUP_DBLIST}
       #- CRON_SCHEDULE="* * * * *"
-    depends_on:
-      - ${PGADMIN_DB_ENGINE}
+#    depends_on:
+#      - ${PGADMIN_DB_ENGINE}
     healthcheck:
       interval: 60s
       timeout: 30s
