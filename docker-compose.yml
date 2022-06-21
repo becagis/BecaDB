@@ -1,7 +1,7 @@
 version: '3.5'
 
 networks:
-  becadb_shared:
+  shared:
     driver: ${NETWORKS_DRIVER}
 
 services:
@@ -18,12 +18,12 @@ services:
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASS=${POSTGRES_PASSWORD}
     volumes:
-      - ${DATA_PATH_HOST}/postgis${POSTGRES_VERSION}:/var/lib/postgresql
+      - ${DATA_PATH_HOST}/postgis14-3.2:/var/lib/postgresql
     ports:
       - "${POSTGRES_PORT}:5432"
     restart: on-failure
     networks:
-      - becadb_shared
+      - shared
 
 ### MySQL ################################################
   mysql8:
@@ -44,7 +44,7 @@ services:
       - "${MYSQL_PORT}:3306"
     restart: on-failure
     networks:
-      - becadb_shared
+      - shared
 
 ### pgAdmin ##############################################
   pgadmin:
@@ -60,7 +60,7 @@ services:
     depends_on:
       - ${PGADMIN_DB_ENGINE}
     networks:
-      - becadb_shared
+      - shared
 
 ### phpMyAdmin ###########################################
   phpmyadmin:
@@ -79,7 +79,7 @@ services:
 #    depends_on:
 #      - "${PMA_DB_ENGINE}"
     networks:
-      - becadb_shared
+      - shared
 
 ### PG Backup ##############################################
   pg-backup:
@@ -102,7 +102,7 @@ services:
       retries: 3
       test: "pg_isready"
     networks:
-      - becadb_shared
+      - shared
 
 ### MySQL Backup ##############################################
 #    mysql-backup:
